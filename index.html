@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Student Assistant</title>
+</head>
+
+<body>
+
+<h2>🎓 AI Student Assistant</h2>
+
+<button onclick="send('I feel overwhelmed')">Overwhelmed</button>
+<button onclick="send('How to improve grades')">Improve Grades</button>
+<button onclick="send('Career guidance')">Career Help</button>
+
+<hr>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="Type here..." />
+<button onclick="send()">Send</button>
+
+<script>
+function send(text) {
+
+  let message = text || document.getElementById("msg").value;
+
+  document.getElementById("chat").innerHTML +=
+    "<p><b>You:</b> " + message + "</p>";
+
+  fetch("/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: message})
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("chat").innerHTML +=
+      "<p><b>AI:</b> " + data.reply + "</p>";
+  });
+
+}
+</script>
+
+</body>
+</html>
